@@ -1,0 +1,1 @@
+insert into product (id,category, description, name, price) values (19,'test-suit-category', 'my description is so long that i may not show well on the UI.', 'product-long-description', 10.00);
