@@ -18,16 +18,20 @@ public class CRUDController {
     QuizRepository quizRepository;
     QuestionRepository questionRepository;
     AnswerRepository answerRepository;
+    QuizSubmissionRepository quizSubmissionRepository;
 
 
     @Autowired
     public CRUDController(
             QuizRepository quizRepository,
             QuestionRepository questionRepository,
-            AnswerRepository answerRepository) {
+            AnswerRepository answerRepository,
+            QuizSubmissionRepository quizSubmissionRepository
+    ) {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
+        this.quizSubmissionRepository = quizSubmissionRepository;
     }
 
     //Quiz App End Points
@@ -83,5 +87,11 @@ public class CRUDController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
+    @PostMapping(path = "/quizApp/addQuizSubmission", consumes = "application/json")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<HttpStatus> saveQuizSubmission(@RequestBody QuizSubmission quizSubmission) {
+        quizSubmissionRepository.save(quizSubmission);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
 }
 
