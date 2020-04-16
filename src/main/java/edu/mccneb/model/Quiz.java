@@ -9,7 +9,7 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Quiz {
-    private long id;
+    private Long id;
     private String content;
     private Set<Question> questions;
 
@@ -28,11 +28,11 @@ public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

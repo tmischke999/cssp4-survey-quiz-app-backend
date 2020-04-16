@@ -2,6 +2,7 @@ package edu.mccneb.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Set;
 
@@ -15,9 +16,9 @@ public class Question{
     private long id;
     private String content;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(name = "question_quiz", joinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "quiz_id", referencedColumnName = "id"))
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "quizzes")
     private Set<Quiz> quizzes;
 
     @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
@@ -65,7 +66,7 @@ public class Question{
         this.answers = answers;
     }
 
-
+    @JsonIgnore
     public Set<Quiz> getQuizzes() {
         return quizzes;
     }

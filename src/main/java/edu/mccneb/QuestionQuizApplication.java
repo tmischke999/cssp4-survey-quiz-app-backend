@@ -39,8 +39,11 @@ public class QuestionQuizApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         // save a couple of Quizzes
         Quiz quizA = new Quiz("Quiz A");
+//        quizA.setId(1);
         Quiz quizB = new Quiz("Quiz B");
+//        quizB.setId(2);
         Quiz quizC = new Quiz("Quiz C");
+//        quizC.setId(3);
 
 
         //question A added to Quiz A and 
@@ -89,6 +92,15 @@ public class QuestionQuizApplication implements CommandLineRunner {
         qc.getQuizzes().add(quizB);
         questionRepository.save(qc);
 
+//        Quiz quiz1 = quizRepository.findById((long) 1).get();
+//        Question quest1 = new Question("Question C", new HashSet<Quiz>(){{
+//            add(quiz1);
+//        }},new HashSet<Answer>(){{
+//            add(new Answer("A1 F",false));
+//            add(new Answer("A2 T",true));
+//            add(new Answer("A3 F",false));
+//        }});
+//        questionRepository.save(quest1);
     }
 }
 

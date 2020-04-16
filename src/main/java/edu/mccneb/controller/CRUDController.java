@@ -1,5 +1,6 @@
 package edu.mccneb.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -113,8 +114,24 @@ public class CRUDController {
 	@PostMapping(path = "/quizApp/addQuestion" , consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<HttpStatus> saveQuestion(@RequestBody Question question){
-		question.setAnswerQuestion();
-		questionRepository.save(question);
+//		question.setAnswerQuestion();
+//
+//        questionRepository.save(question);
+
+//        Quiz quiz = quizRepository.findById((long) 1).get();
+        Set<Quiz> quizzes = new HashSet<Quiz>();
+        question.getQuizzes().forEach(q -> {
+        	if(q.getId() != null) {
+				quizzes.add(quizRepository.findById(q.getId()).get());
+			}else{
+        		quizzes.add(q);
+			}
+		});
+        Question quest = new Question(question.getContent(), quizzes, question.getAnswers());
+        quest.setAnswerQuestion();
+        questionRepository.save(quest);
+
+
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
