@@ -42,7 +42,7 @@ public class CRUDController {
     }
 
     @GetMapping("/quizApp/questions")
-    @CrossOrigin(origins = "http://localhost:4200/")
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<List<Question>> getAllQuestions() {
         return ResponseEntity.ok(questionRepository.findAll());
     }
