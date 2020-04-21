@@ -81,7 +81,7 @@ public class CRUDController {
 	}
 
 	@GetMapping("/quizApp/questions")
-	@CrossOrigin(origins = "http://localhost:4200/")
+	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<List<Question>> getAllQuestions(){
 		return ResponseEntity.ok(questionRepository.findAll());
 	}
@@ -114,11 +114,6 @@ public class CRUDController {
 	@PostMapping(path = "/quizApp/addQuestion" , consumes = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<HttpStatus> saveQuestion(@RequestBody Question question){
-//		question.setAnswerQuestion();
-//
-//        questionRepository.save(question);
-
-//        Quiz quiz = quizRepository.findById((long) 1).get();
         Set<Quiz> quizzes = new HashSet<Quiz>();
         question.getQuizzes().forEach(q -> {
         	if(q.getId() != null) {
@@ -142,6 +137,36 @@ public class CRUDController {
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
+
+	@PostMapping(path = "/quizApp/updateQuiz" , consumes = "application/json")
+	@CrossOrigin(origins = "http://localhost:4200")
+	public ResponseEntity<HttpStatus> updateQuiz(@RequestBody Quiz quiz){
+
+		Quiz tempQuiz = quizRepository.findById(quiz.getId()).get();
+		tempQuiz.setContent(quiz.getContent());
+
+		quiz.getQuestions().forEach(question -> {
+			Question tempQuestion = questionRepository.findById(question.getId()).get();
+			tempQuestion.setContent(question.getContent());
+
+			Set<Answer> tempAnswers = new HashSet<Answer>(){};
+			question.getAnswers().forEach(answer -> {
+				Answer tempAnswer = answerRepository.findById(answer.getId()).get();
+				tempAnswer.setContent(answer.getContent());
+				tempAnswer.setCorrect(answer.isCorrect());
+				tempAnswers.add(tempAnswer);
+			});
+
+			tempQuestion.setAnswers(tempAnswers);
+		});
+
+		quizRepository.save(tempQuiz);
+		questionRepository.saveAll(tempQuiz.getQuestions());
+		tempQuiz.getQuestions().forEach(question -> answerRepository.saveAll(question.getAnswers()));
+
+
+		return ResponseEntity.ok(HttpStatus.CREATED);
+	}
 
 }
 
